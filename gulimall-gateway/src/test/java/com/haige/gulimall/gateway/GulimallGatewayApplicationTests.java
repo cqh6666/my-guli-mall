@@ -1,12 +1,10 @@
-package com.haige.gulimall.member;
+package com.haige.gulimall.gateway;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class GulimallMemberApplicationTests {
-
-
+class GulimallGatewayApplicationTests {
 
     @Test
     void contextLoads() {

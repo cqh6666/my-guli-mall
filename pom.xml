@@ -18,6 +18,7 @@
         <module>gulimall-admin</module>
         <module>gulimall-generator</module>
         <module>gulimall-common</module>
+        <module>gulimall-gateway</module>
     </modules>
 
 
