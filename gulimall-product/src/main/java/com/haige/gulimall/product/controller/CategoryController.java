@@ -1,18 +1,16 @@
 package com.haige.gulimall.product.controller;
 
 import java.util.Arrays;
-import java.util.Map;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.haige.gulimall.product.entity.CategoryEntity;
 import com.haige.gulimall.product.service.CategoryService;
-import com.haige.common.utils.PageUtils;
 import com.haige.common.utils.R;
 
 
@@ -31,13 +29,12 @@ public class CategoryController {
     private CategoryService categoryService;
 
     /**
-     * 列表
+     * 查出所有分类以及子分类，以树形结构组装起来
      */
-    @RequestMapping("/list")
-    public R list(@RequestParam Map<String, Object> params){
-        PageUtils page = categoryService.queryPage(params);
-
-        return R.ok().put("page", page);
+    @RequestMapping("/list/tree")
+    public R list(){
+        List<CategoryEntity> entityList = categoryService.listWithTree();
+        return R.ok().put("data", entityList);
     }
 
 
@@ -62,6 +59,16 @@ public class CategoryController {
     }
 
     /**
+     * 修改顺序
+     */
+    @RequestMapping("/update/sort")
+    public R update(@RequestBody CategoryEntity[] category){
+        categoryService.updateBatchById(Arrays.asList(category));
+        return R.ok();
+    }
+
+
+    /**
      * 修改
      */
     @RequestMapping("/update")
@@ -76,8 +83,10 @@ public class CategoryController {
      */
     @RequestMapping("/delete")
     public R delete(@RequestBody Long[] catIds){
-		categoryService.removeByIds(Arrays.asList(catIds));
+        // 删除菜单时需要考虑到子菜单是否还存在
+        //categoryService.removeByIds(Arrays.asList(catIds));
 
+        categoryService.removeMenuByIds(Arrays.asList(catIds));
         return R.ok();
     }
 
