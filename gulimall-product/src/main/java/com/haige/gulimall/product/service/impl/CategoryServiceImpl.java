@@ -3,8 +3,7 @@ package com.haige.gulimall.product.service.impl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
@@ -57,6 +56,20 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryDao, CategoryEntity
         baseMapper.deleteBatchIds(asList);
     }
 
+    @Override
+    public Long[] findCatelogPath(Long catelogId) {
+        LinkedList<Long> paths = new LinkedList<>();
+        findParentPath(paths,catelogId);
+        return paths.toArray(new Long[0]);
+    }
+
+    private void findParentPath(LinkedList<Long> paths,Long catelogId){
+        paths.addFirst(catelogId);
+        CategoryEntity parentCategory = this.getById(catelogId);
+        if(parentCategory.getParentCid()!=0){
+            findParentPath(paths,parentCategory.getParentCid());
+        }
+    }
     /**
      * 递归查找所有的子菜单
      * @param root

@@ -13,10 +13,10 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 
 @SpringBootApplication
-public class RenrenApplication {
+public class GulimallAdminApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(RenrenApplication.class, args);
+		SpringApplication.run(GulimallAdminApplication.class, args);
 	}
 
 }

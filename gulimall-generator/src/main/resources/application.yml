@@ -7,9 +7,9 @@ spring:
     type: com.alibaba.druid.pool.DruidDataSource
     #MySQL配置
     driverClassName: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://124.71.107.183:3309/gulimall_wms?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai
+    url: jdbc:mysql://81.68.240.174:3306/gulimall_wms?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai
     username: root
-    password: root
+    password: haige123
     #oracle配置
     #    driverClassName: oracle.jdbc.OracleDriver
     #    url: jdbc:oracle:thin:@47.100.206.162:1521:xe
