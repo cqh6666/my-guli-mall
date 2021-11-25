@@ -7,7 +7,11 @@ import com.haige.gulimall.product.entity.CategoryEntity;
 import com.haige.gulimall.product.service.BrandService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
+
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -27,6 +31,9 @@ public class CategoryBrandRelationServiceImpl extends ServiceImpl<CategoryBrandR
 
     @Autowired
     private CategoryDao categoryDao;
+
+    @Autowired
+    private BrandService brandService;
 
     @Override
     public PageUtils queryPage(Map<String, Object> params) {
@@ -75,6 +82,19 @@ public class CategoryBrandRelationServiceImpl extends ServiceImpl<CategoryBrandR
 
         //方法二 用mapper
         this.baseMapper.updateCategoryName(catId,name);
+    }
+
+    @Override
+    public List<BrandEntity> getBrandByCatId(Long catId) {
+
+        List<CategoryBrandRelationEntity> brandRelationEntityList = this.baseMapper.selectList(new QueryWrapper<CategoryBrandRelationEntity>().eq("catelog_id", catId));
+        List<BrandEntity> brandEntityList = brandRelationEntityList.stream().map(item -> {
+            Long brandId = item.getBrandId();
+            BrandEntity brandEntity = brandService.getById(brandId);
+            return brandEntity;
+        }).collect(Collectors.toList());
+
+        return brandEntityList;
     }
 
 }

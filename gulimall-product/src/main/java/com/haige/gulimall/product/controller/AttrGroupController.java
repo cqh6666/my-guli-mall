@@ -10,6 +10,7 @@ import com.haige.gulimall.product.entity.AttrEntity;
 import com.haige.gulimall.product.service.AttrAttrgroupRelationService;
 import com.haige.gulimall.product.service.CategoryService;
 import com.haige.gulimall.product.vo.AttrGroupRelationVo;
+import com.haige.gulimall.product.vo.AttrGroupWithAttrVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -99,6 +100,15 @@ public class AttrGroupController {
         return R.ok();
     }
 
+    /**
+     * 获取分类下所有分组&关联属性
+     * /product/attrgroup/{catelogId}/withattr
+     */
+    @GetMapping("/{catelogId}/withattr")
+    public R getAttrGroupWithAttrByCatelogId(@PathVariable("catelogId")Long catelogId){
+        List<AttrGroupWithAttrVo> list = attrGroupService.getAttrGroupWithAttrByCatelogId(catelogId);
+        return R.ok().put("data",list);
+    }
     /**
      * 保存
      */
