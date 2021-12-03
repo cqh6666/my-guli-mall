@@ -32,7 +32,6 @@ public class PurchaseController {
     @PostMapping("done")
     public R doneAction(@RequestBody PurchaseDoneVo doneVo){
         purchaseService.doneAction(doneVo);
-
         return R.ok();
     }
 

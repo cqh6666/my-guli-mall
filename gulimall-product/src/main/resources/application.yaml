@@ -20,6 +20,6 @@ mybatis-plus:
       logic-not-delete-value: 0
 
 ribbon:
-  ReadTimeout: 5000 #单位毫秒
-  ConnectTimeout: 5000 #单位毫秒
+  ReadTimeout: 50000 #单位毫秒
+  ConnectTimeout: 50000 #单位毫秒
 

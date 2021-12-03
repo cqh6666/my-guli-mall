@@ -29,4 +29,24 @@ public class ProductConstant {
             return mag;
         }
     }
+
+    public enum StatusEnum{
+        NEW_PRODUCT(0,"新建"),SPU_UP(1,"上架"),SPU_DOWN(2,"下架");
+
+        private int code;
+        private String mag;
+
+        StatusEnum(int code, String mag) {
+            this.code = code;
+            this.mag = mag;
+        }
+
+        public int getCode() {
+            return code;
+        }
+
+        public String getMag() {
+            return mag;
+        }
+    }
 }

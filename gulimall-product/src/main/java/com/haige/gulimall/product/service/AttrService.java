@@ -6,6 +6,7 @@ import com.haige.gulimall.product.entity.AttrEntity;
 import com.haige.gulimall.product.vo.AttrRespVo;
 import com.haige.gulimall.product.vo.AttrVo;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -26,5 +27,12 @@ public interface AttrService extends IService<AttrEntity> {
     AttrRespVo getInfoById(Long attrId);
 
     void updateInfoById(AttrVo attr);
+
+    /**
+     * 指定的所有属性集合中，挑出检索的属性
+     * @param attrIds
+     * @return
+     */
+    List<Long> selectSearchAttrs(List<Long> attrIds);
 }
 
