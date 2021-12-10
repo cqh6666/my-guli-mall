@@ -1,4 +1,4 @@
-package com.haige.gulimall.product.controller;
+package com.haige.gulimall.product.app;
 
 import java.util.Arrays;
 import java.util.List;
@@ -11,12 +11,9 @@ import com.haige.gulimall.product.vo.AttrVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import com.haige.gulimall.product.entity.AttrEntity;
 import com.haige.gulimall.product.service.AttrService;
 import com.haige.common.utils.PageUtils;
 import com.haige.common.utils.R;
-
-import javax.annotation.Resource;
 
 
 /**

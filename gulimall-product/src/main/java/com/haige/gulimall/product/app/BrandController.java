@@ -1,4 +1,4 @@
-package com.haige.gulimall.product.controller;
+package com.haige.gulimall.product.app;
 
 import java.util.Arrays;
 import java.util.Map;
@@ -11,8 +11,6 @@ import com.haige.gulimall.product.entity.BrandEntity;
 import com.haige.gulimall.product.service.BrandService;
 import com.haige.common.utils.PageUtils;
 import com.haige.common.utils.R;
-
-import javax.validation.Valid;
 
 
 /**

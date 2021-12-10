@@ -1,7 +1,9 @@
 package com.haige.gulimall.product.service.impl;
 
 import com.haige.gulimall.product.service.CategoryBrandRelationService;
+import com.haige.gulimall.product.vo.Catelog2Vo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -78,6 +80,62 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryDao, CategoryEntity
             // categoryBrandRelation这个表也要跟着更新
             categoryBrandRelationService.updateCategoryName(category.getCatId(),category.getName());
         }
+    }
+
+    @Override
+    public List<CategoryEntity> getLevelOneCategories() {
+        return baseMapper.selectList(new QueryWrapper<CategoryEntity>().eq("parent_cid", 0));
+    }
+
+
+    /**
+     * 自定义cache
+     * 1. key ，value
+     *  spel
+     * 2. expire_time
+     * 3. json格式
+     * @return
+     */
+    @Cacheable(value = "category",key = "#root.method.name")
+    @Override
+    public Map<String, List<Catelog2Vo>> getCategoryJson() {
+        // 一次查出目录信息，包括一级分类二级分类三级分类
+        List<CategoryEntity> categoryEntities = baseMapper.selectList(null);
+
+        List<CategoryEntity> levelOneCategories = getParent_cid(categoryEntities, 0L);
+
+        // 返回 List<Catelog2Vo>
+        return levelOneCategories.stream().collect(Collectors.toMap(key->key.getCatId().toString(),value->{
+            // 遍历每一个一级分类，返回所有二级分类
+            List<CategoryEntity> categoryTwoEntities = getParent_cid(categoryEntities,value.getCatId());
+            List<Catelog2Vo> catelog2Vos = null;
+            if(categoryTwoEntities!=null){
+                catelog2Vos = categoryTwoEntities.stream().map(categoryTwoEntity -> {
+                    List<CategoryEntity> categoryThreeEntities = getParent_cid(categoryEntities,categoryTwoEntity.getCatId());
+                    List<Catelog2Vo.Category3Vo> category3Vos = null;
+                    // 封装三级分类
+                    if(categoryThreeEntities!=null){
+                        category3Vos =  categoryThreeEntities.stream().map(categoryThreeEntity -> {
+                            return new Catelog2Vo.Category3Vo(categoryThreeEntity.getParentCid().toString(), categoryThreeEntity.getCatId().toString(), categoryThreeEntity.getName());
+                        }).collect(Collectors.toList());
+                    }
+                    return new Catelog2Vo(value.getCatId().toString(), category3Vos, categoryTwoEntity.getCatId().toString(), categoryTwoEntity.getName());
+                }).collect(Collectors.toList());
+            }
+
+            return catelog2Vos;
+        }));
+    }
+
+    /**
+     * 根据父类ID获取其所有子分类数据
+     * @param selectList 所有数据
+     * @param parentCid 父类ID
+     * @return
+     */
+    private List<CategoryEntity> getParent_cid(List<CategoryEntity> selectList, Long parentCid) {
+        return selectList.stream().filter(item -> item.getParentCid().equals(parentCid)).collect(Collectors.toList());
+//        return new QueryWrapper<CategoryEntity>().eq("parent_cid", value.getCatId());
     }
 
     private void findParentPath(LinkedList<Long> paths,Long catelogId){

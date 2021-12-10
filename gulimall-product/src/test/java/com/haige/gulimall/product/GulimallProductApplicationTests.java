@@ -6,8 +6,12 @@ import com.haige.gulimall.product.service.BrandService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.core.StringRedisTemplate;
+import org.springframework.data.redis.core.ValueOperations;
 
 import java.util.List;
+import java.util.UUID;
 
 @SpringBootTest
 class GulimallProductApplicationTests {
@@ -34,6 +38,20 @@ class GulimallProductApplicationTests {
         brandList.forEach((item) -> {
             System.out.println(item);
         });
+    }
+
+    @Autowired
+    private StringRedisTemplate redisTemplate;
+
+    @Test
+    void redisTest(){
+        ValueOperations<String, String> opsForValue = redisTemplate.opsForValue();
+        // 保存
+        opsForValue.set("haige","hello"+ UUID.randomUUID().toString());
+
+        String haige = opsForValue.get("haige");
+        System.out.println(haige);
+
     }
 
 }

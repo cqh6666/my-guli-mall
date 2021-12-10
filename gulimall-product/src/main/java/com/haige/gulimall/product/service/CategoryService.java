@@ -3,6 +3,7 @@ package com.haige.gulimall.product.service;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.haige.common.utils.PageUtils;
 import com.haige.gulimall.product.entity.CategoryEntity;
+import com.haige.gulimall.product.vo.Catelog2Vo;
 
 import java.util.List;
 import java.util.Map;
@@ -34,6 +35,14 @@ public interface CategoryService extends IService<CategoryEntity> {
      * @param category
      */
     void updateCascade(CategoryEntity category);
+
+    /**
+     * 查出所有一级分类
+     * @return
+     */
+    List<CategoryEntity> getLevelOneCategories();
+
+    Map<String, List<Catelog2Vo>> getCategoryJson();
 
 }
 
