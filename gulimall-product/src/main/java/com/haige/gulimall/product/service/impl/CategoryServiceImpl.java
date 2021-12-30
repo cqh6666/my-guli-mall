@@ -82,6 +82,7 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryDao, CategoryEntity
         }
     }
 
+    @Cacheable(value = "category", key = "#root.methodName")
     @Override
     public List<CategoryEntity> getLevelOneCategories() {
         return baseMapper.selectList(new QueryWrapper<CategoryEntity>().eq("parent_cid", 0));

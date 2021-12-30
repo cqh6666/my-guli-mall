@@ -4,6 +4,9 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.PropertyAccessor;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.cache.CacheProperties;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
+import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.CachingConfigurerSupport;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -54,17 +57,30 @@ public class MyCacheConfig extends CachingConfigurerSupport {
 //    @Bean
 //    public RedisCacheManager redisCacheManager(RedisTemplate redisTemplate) {
 //        RedisCacheWriter redisCacheWriter = RedisCacheWriter.nonLockingRedisCacheWriter(redisTemplate.getConnectionFactory());
-//        RedisCacheConfiguration redisCacheConfiguration = RedisCacheConfiguration.defaultCacheConfig()
-//                .serializeValuesWith(RedisSerializationContext.SerializationPair.fromSerializer(redisTemplate.getValueSerializer()));
+//        RedisCacheConfiguration redisCacheConfiguration = RedisCacheConfiguration
+//                .defaultCacheConfig()
+//                .serializeValuesWith(RedisSerializationContext.SerializationPair.fromSerializer(redisTemplate.getValueSerializer()))
+//                .entryTtl(Duration.ofHours(1));
 //        return new RedisCacheManager(redisCacheWriter, redisCacheConfiguration);
 //    }
 
     @Bean
-    RedisCacheConfiguration redisCacheConfiguration(){
+    RedisCacheConfiguration redisCacheConfiguration(CacheProperties cacheProperties){
         RedisCacheConfiguration config = RedisCacheConfiguration.defaultCacheConfig();
         config = config.serializeKeysWith(RedisSerializationContext.SerializationPair.fromSerializer(new StringRedisSerializer()));
         config = config.serializeValuesWith(RedisSerializationContext.SerializationPair.fromSerializer(new GenericJackson2JsonRedisSerializer()));
-        config = config.entryTtl(Duration.ofHours(1));
+
+        // 其它的则还是使用默认配置
+        CacheProperties.Redis redisProperties = cacheProperties.getRedis();
+        if (redisProperties.getTimeToLive() != null) {
+            config = config.entryTtl(redisProperties.getTimeToLive());
+        }
+        if (!redisProperties.isCacheNullValues()) {
+            config = config.disableCachingNullValues();
+        }
+        if (!redisProperties.isUseKeyPrefix()) {
+            config = config.disableKeyPrefix();
+        }
         return config;
     }
 

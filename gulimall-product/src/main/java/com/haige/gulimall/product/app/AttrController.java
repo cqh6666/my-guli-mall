@@ -66,7 +66,7 @@ public class AttrController {
     /**
      * 信息
      */
-    @RequestMapping("/info/{attrId}")
+    @GetMapping("/info/{attrId}")
     public R info(@PathVariable("attrId") Long attrId){
         AttrRespVo attrRespVo = attrService.getInfoById(attrId);
         return R.ok().put("attr", attrRespVo);

@@ -42,7 +42,12 @@ spring:
         - id: gulimall_host_route
           uri: lb://gulimall-product
           predicates:
-            - Host=**.gulimall.com,gulimall.com
+            - Host=gulimall.com
+
+        - id: gulimall_search_route
+          uri: lb://gulimall-search
+          predicates:
+            - Host=search.gulimall.com
 
 # 注意优先级，精确的要放在前面
 # 路由转换
