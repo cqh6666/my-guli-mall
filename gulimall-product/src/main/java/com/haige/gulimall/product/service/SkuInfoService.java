@@ -3,9 +3,12 @@ package com.haige.gulimall.product.service;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.haige.common.utils.PageUtils;
 import com.haige.gulimall.product.entity.SkuInfoEntity;
+import com.haige.gulimall.product.vo.SkuItemVo;
+import com.haige.gulimall.product.vo.skuinfo.SkuItemSaleAttrVo;
 
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ExecutionException;
 
 /**
  * sku信息
@@ -23,5 +26,9 @@ public interface SkuInfoService extends IService<SkuInfoEntity> {
     PageUtils queryPageByCondition(Map<String, Object> params);
 
     List<SkuInfoEntity> getSkusBySpuId(Long spuId);
+
+    SkuItemVo item(Long skuId) throws ExecutionException, InterruptedException;
+
+    List<SkuItemSaleAttrVo> getSaleAttrValueBySpuId(Long spuId);
 }
 

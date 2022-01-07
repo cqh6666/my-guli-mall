@@ -1,8 +1,11 @@
 package com.haige.gulimall.product;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.haige.gulimall.product.dao.AttrGroupDao;
 import com.haige.gulimall.product.entity.BrandEntity;
+import com.haige.gulimall.product.service.AttrGroupService;
 import com.haige.gulimall.product.service.BrandService;
+import com.haige.gulimall.product.vo.skuinfo.SpuItemAttrGroupVo;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -52,6 +55,15 @@ class GulimallProductApplicationTests {
         String haige = opsForValue.get("haige");
         System.out.println(haige);
 
+    }
+
+    @Autowired
+    private AttrGroupDao attrGroupDao;
+
+    @Test
+    void attrGroupTest(){
+        List<SpuItemAttrGroupVo> list = attrGroupDao.getAttrGroupWithAttrsBySpuIdAndCatelogId(8L, 225L);
+        System.out.println(list);
     }
 
 }

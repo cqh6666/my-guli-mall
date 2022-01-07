@@ -42,4 +42,6 @@ public class IndexController {
     public Map<String, List<Catelog2Vo>> getCategoryJson(){
         return categoryService.getCategoryJson();
     }
+
+
 }

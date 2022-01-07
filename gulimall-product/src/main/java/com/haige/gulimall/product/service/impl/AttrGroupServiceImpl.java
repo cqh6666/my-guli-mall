@@ -3,6 +3,7 @@ package com.haige.gulimall.product.service.impl;
 import com.haige.gulimall.product.entity.AttrEntity;
 import com.haige.gulimall.product.service.AttrService;
 import com.haige.gulimall.product.vo.AttrGroupWithAttrVo;
+import com.haige.gulimall.product.vo.skuinfo.SpuItemAttrGroupVo;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -77,6 +78,11 @@ public class AttrGroupServiceImpl extends ServiceImpl<AttrGroupDao, AttrGroupEnt
         return attrVos;
 
 
+    }
+
+    @Override
+    public List<SpuItemAttrGroupVo> getAttrGroupWithAttrsBySpuIdAndCatelogId(Long spuId, Long catalogId) {
+        return this.baseMapper.getAttrGroupWithAttrsBySpuIdAndCatelogId(spuId,catalogId);
     }
 
 }

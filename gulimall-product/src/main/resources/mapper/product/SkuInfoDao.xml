@@ -17,6 +17,24 @@
         <result property="price" column="price"/>
         <result property="saleCount" column="sale_count"/>
     </resultMap>
+    <resultMap id="SkuItemSaleAttrVo" type="com.haige.gulimall.product.vo.skuinfo.SkuItemSaleAttrVo">
+        <result property="attrId" column="attr_id"></result>
+        <result property="attrName" column="attr_name"></result>
+        <collection property="attrValues" ofType="com.haige.gulimall.product.vo.skuinfo.AttrValueWithSkuIdVo">
+            <result property="attrValue" column="attr_value"></result>
+            <result property="skuId" column="sku_id"></result>
+        </collection>
+    </resultMap>
+    <select id="getSaleAttrValueBySpuId" resultMap="SkuItemSaleAttrVo">
+        SELECT
+            ssav.attr_id attr_id,
+            ssav.attr_name attr_name,
+            ssav.attr_value attr_value,
+            ssav.sku_id sku_id
+        FROM gulimall_pms.pms_sku_info si
+        LEFT JOIN gulimall_pms.pms_sku_sale_attr_value ssav ON ssav.sku_id=si.sku_id
+        WHERE si.spu_id=#{spuId}
+    </select>
 
 
 </mapper>

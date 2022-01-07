@@ -12,6 +12,25 @@
         <result property="icon" column="icon"/>
         <result property="catelogId" column="catelog_id"/>
     </resultMap>
+    <resultMap id="SpuItemAttrGroupVo" type="com.haige.gulimall.product.vo.skuinfo.SpuItemAttrGroupVo">
+        <result property="groupName" column="attr_group_name"></result>
+        <collection property="attrs" ofType="com.haige.gulimall.product.vo.spuinfo.Attr">
+            <result property="attrId" column="attr_id"></result>
+            <result property="attrName" column="attr_name"></result>
+            <result property="attrValue" column="attr_value"></result>
+        </collection>
+    </resultMap>
+    <select id="getAttrGroupWithAttrsBySpuIdAndCatelogId" resultMap="SpuItemAttrGroupVo">
+        SELECT
+            ag.attr_group_id,ag.attr_group_name,
+            aar.attr_id,
+            pav.attr_name,
+            pav.attr_value
+        FROM gulimall_pms.pms_attr_group ag
+                 LEFT JOIN gulimall_pms.pms_attr_attrgroup_relation aar	ON ag.attr_group_id=aar.attr_group_id
+                 LEFT JOIN gulimall_pms.pms_product_attr_value pav ON pav.attr_id=aar.attr_id
+        WHERE catelog_id = #{catelogId} AND spu_id = #{spuId}
+    </select>
 
 
 </mapper>
